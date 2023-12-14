@@ -5,13 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-/**
- * An implementation of the Boyer-Moore string search algorithm. 
- * It finds all occurrences of a pattern in a text, performing a case-insensitive search on ASCII characters.
- * 
- * For all full description of the algorithm visit:
- * https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_string-search_algorithm
- */
 public final class BoyerMoore {
 	
 	/**
@@ -29,31 +22,31 @@ public final class BoyerMoore {
 	    int[] L = goodSuffixTable(pattern);
 	    int[] F = fullShiftTable(pattern);
 
-	    int k = pattern.length() - 1; // Represents the alignment of the end of aPattern relative to aText
-	    int previousK = -1; // Represents the above alignment in the previous phase
+	    int k = pattern.length() - 1; 				//alignment of the end of pattern relative to text
+	    int prevK = -1; 							//alignment in the previous phase
 	    while ( k < text.length() ) {
-	        int i = pattern.length() - 1; // Index of the character to compare in aPattern
-	        int h = k; // Index of the character to compare in aText
-	        while ( i >= 0 && h > previousK && pattern.charAt(i) == text.charAt(h) ) {
+	        int i = pattern.length() - 1; 			// Index of char to compare in pattern
+	        int h = k; 								// Index of char to compare in text
+	        while ( i >= 0 && h > prevK && pattern.charAt(i) == text.charAt(h) ) {
 	            i -= 1;
 	            h -= 1;
 	        }
-	        if ( i == -1 || h == previousK ) { // Match has been found
+	        if ( i == -1 || h == prevK ) { 			// Match has been found
 	            matches.add(k - pattern.length() + 1);
 	            k += ( pattern.length() > 1 ) ? pattern.length() - F[1] : 1;
-	        } else { // No match, shift by the maximum of the bad character and good suffix rules
+	        } else { 								// No match, shift by the maximum of the bad character and good suffix rules
 	        	int suffixShift;
 	            int charShift = i - R.get(alphabetIndex(text.charAt(h))).get(i);
-	            if ( i + 1 == pattern.length() ) { // Mismatch occurred on the first character
+	            if ( i + 1 == pattern.length() ) { 	// Mismatch occurred on the first char
 	                suffixShift = 1;
-	            } else if ( L[i + 1] == -1 ) { // Matched suffix does not appear anywhere in aPattern
+	            } else if ( L[i + 1] == -1 ) { 		// Matched suffix does not appear anywhere in pattern
 	                suffixShift = pattern.length() - F[i + 1];
-	            } else { // Matched suffix appears in aPattern
+	            } else { 							// Matched suffix appears in pattern
 	                suffixShift = pattern.length() - 1 - L[i + 1];
 	            }
 	            int shift = Math.max(charShift, suffixShift);
-	            if ( shift >= i + 1 ) { // Galil's rule
-	            	previousK = k;
+	            if ( shift >= i + 1 ) { 			// Galil's rule
+	            	prevK = k;
 	            }
 	            k += shift;
 	        }
@@ -157,19 +150,19 @@ public final class BoyerMoore {
 	    int left = 0;
 	    int right = 0;
 	    for ( int i = 2 + Z[1]; i < pattern.length(); i++ ) {
-	        if ( i <= right ) { // i falls within existing z-box
+	        if ( i <= right ) { 					// i falls within existing z-box
 	            final int k = i - left;
 	            final int b = Z[k];
 	            final int a = right - i + 1;
-	            if ( b < a ) { // b ends within existing z-box
+	            if ( b < a ) { 						// b ends within existing z-box
 	                Z[i] = b;
-	            } else { // b ends at or after the end of the z-box,
-	            		 // an explicit match to the right of the z-box is required
+	            } else { 							// b ends at or after the end of the z-box,
+	            		 							// an explicit match to the right of the z-box is required
 	                Z[i] = a + matchLength(pattern, a, right + 1);
 	                left = i;
 	                right = i + Z[i] - 1;
 	            }
-	        } else { // i does not fall within existing z-box
+	        } else { 								// i does not fall within existing z-box
 	            Z[i] = matchLength(pattern, 0, i);
 	            if ( Z[i] > 0 ) {
 	                left = i;
