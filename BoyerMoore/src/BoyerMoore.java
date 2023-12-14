@@ -176,17 +176,17 @@ public final class BoyerMoore {
 	/**
 	 * Return the length of the match of the two substrings of the given text beginning at each of the given indexes.
 	 */ 
-	private static int matchLength(String pattern, int aIndexOne, int aIndexTwo) {	    
-	    if ( aIndexOne == aIndexTwo ) {
-	        return pattern.length() - aIndexOne;
+	private static int matchLength(String pattern, int index1, int index2) {	    
+	    if ( index1 == index2 ) {
+	        return pattern.length() - index1;
 	    }
 	    
 	    int matchCount = 0;
-	    while ( aIndexOne < pattern.length() && aIndexTwo < pattern.length() 
-	    	    && pattern.charAt(aIndexOne) == pattern.charAt(aIndexTwo) ) {
+	    while ( index1 < pattern.length() && index2 < pattern.length() 
+	    	    && pattern.charAt(index1) == pattern.charAt(index2) ) {
 	        matchCount += 1;
-	        aIndexOne += 1;
-	        aIndexTwo += 1;
+	        index1 += 1;
+	        index2 += 1;
 	    }
 	    return matchCount;
 	}	
