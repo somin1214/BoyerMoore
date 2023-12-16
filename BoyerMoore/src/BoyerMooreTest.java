@@ -13,13 +13,13 @@ public class BoyerMooreTest {
 	        testBoyerMoore("ABC", "ABCDAB", "Basic Test");
 	        
 	        // Test Case 2: Pattern at the Beginning
-	        testBoyerMoore("ABC", "ABCDEF", "Pattern at the Beginning");
+	        testBoyerMoore("ABC", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "Pattern at the Beginning");
 	      
 	        // Test Case 3: Pattern at the End
-	        testBoyerMoore("ABC", "XYZABC", "Pattern at the End");
+	        testBoyerMoore("ABC", "DEFGHIJKLMNOPQRSTUVWXYZABC", "Pattern at the End");
 	        
 	        // Test Case 4: Multiple Occurrences
-	        testBoyerMoore("AB", "ABABAB", "Multiple Occurrences");
+	        testBoyerMoore("ABC", "ABCDEFRANDOMABWORDSCABCABC", "Multiple Occurrences");
 	        
 	        // Test Case 5: Pattern Not Found	       
 	        testBoyerMoore("ABC", "XYZ", "Pattern Not Found");
